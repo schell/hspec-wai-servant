@@ -3,6 +3,7 @@
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE PolyKinds             #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
@@ -21,26 +22,32 @@ module Test.Hspec.Wai.Servant.Client
   , putExpectationFailure
   ) where
 
-import           Network.Wai.Test                                (SResponse (..))
+import           Network.Wai.Test
+                                                                                               (SResponse (..))
 import           Test.Hspec.Wai
 
-import qualified Data.ByteString.Char8                           as BC
-import qualified Data.CaseInsensitive                            as CI
-import           Data.Monoid                                     ((<>))
+import qualified Data.ByteString.Char8                                                        as BC
+import qualified Data.CaseInsensitive                                                         as CI
+import           Data.Monoid
+                                                                                               ((<>))
 import           Data.Proxy
-import           Data.Typeable                                   (Typeable,
-                                                                  showsTypeRep,
-                                                                  typeRep)
+import           Data.Typeable
+                                                                                               (Typeable,
+                                                                                               showsTypeRep,
+                                                                                               typeRep)
 import           GHC.TypeLits
-import qualified Network.HTTP.Media.RenderHeader                 as HT
-import qualified Network.HTTP.Types                              as HT
+import qualified Network.HTTP.Media.RenderHeader                                              as HT
+import qualified Network.HTTP.Types                                                           as HT
 import           Servant.API
-import           Servant.Checked.Exceptions.Internal.Envelope    (Envelope)
-import           Servant.Checked.Exceptions.Internal.Servant.API (NoThrow,
-                                                                  Throwing,
-                                                                  ThrowingNonterminal,
-                                                                  Throws)
-import           Test.Hspec.Expectations                         (expectationFailure)
+import           Servant.Checked.Exceptions.Internal.Envelope
+                                                                                               (Envelope)
+import           "servant-checked-exceptions" Servant.Checked.Exceptions.Internal.Servant.API
+                                                                                               (NoThrow,
+                                                                                               Throwing,
+                                                                                               ThrowingNonterminal,
+                                                                                               Throws)
+import           Test.Hspec.Expectations
+                                                                                               (expectationFailure)
 
 import           Test.Hspec.Wai.Servant.Types
 
@@ -134,7 +141,7 @@ instance {-# OVERLAPPABLE #-}
          ) => HasTestClient (Verb method status cts' a) where
   type TestClient (Verb method status cts' a) = WaiSession (TestResponse a)
 
-  testClientWithRoute Proxy req = performTestRequestCT ct method req
+  testClientWithRoute Proxy = performTestRequestCT ct method
     where
       ct = Proxy :: Proxy ct
       method = Proxy :: Proxy method
